@@ -1,118 +1,94 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import React from 'react';
-import type {PropsWithChildren} from 'react';
+import React, { useState } from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
-  useColorScheme,
-  View,
+  TextInput,
+  TouchableOpacity,
+  View
 } from 'react-native';
+import axios from 'axios';
+const base = 'http://192.168.18.114:4000'
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
+const NameInput = ({ updateText }: { updateText: any }) => {
+  return <View style={styles.inputWrapper}>
+    <Text>Name: </Text>
+    <TextInput onTextInput={updateText} placeholder='Enter Name' />
+  </View>
 }
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+const PasswordInput = ({ updateText }: { updateText: any }) => {
+  return <View style={styles.inputWrapper}>
+    <Text>Password: </Text>
+    <TextInput
+      onTextInput={updateText}
+      secureTextEntry={true}
+      placeholder='Password' />
+  </View>
+}
+const LoginSectionHeader = ()=>{
+  return <View style={{alignSelf: 'center',marginVertical:'30%'}}>
+    <Text style={{fontSize:50,}}>
+      Login
+    </Text>
+  </View>
+}
+const attemptLogin = async ()=>{
+  const id = 'nitin4real'
+  const password = 'passowrd123'
+  try{
+    const res = await axios.post(`${base}/login`, { id, password })
+    console.log(res.data)
+  } catch(er){
+    console.log(er)
+  }
+}
+const LoginButton = ()=>{
+  return <TouchableOpacity style={styles.loginButtonWrapper}>
+    <Text style={styles.loginButtonText} onPress={attemptLogin}>
+      Login
+    </Text>
+  </TouchableOpacity>
+}
+const LoginScreen = () => {
+  const [name, updateName] = useState()
+  const [password, updatePassword] = useState()
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
+  return <View>
+    <LoginSectionHeader/>
+    <NameInput updateText={updateName} />
+    <PasswordInput updateText={updatePassword} />
+    <LoginButton/>
+  </View>
+}
+function App() {
+  const [isLoading, setIsLoading] = useState(false)
+  return <LoginScreen />
 }
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  inputWrapper: {
+    flexDirection: 'row',
+    marginHorizontal: 20,
+    justifyContent: 'space-between',
+    borderWidth: 1,
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    marginVertical: 10,
+    borderRadius: 5,
+    borderColor: '#DDD'
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
+  loginButtonWrapper: {
+    alignSelf: 'center',
+    borderWidth:1,
+    paddingVertical: 8,
+    paddingHorizontal: 30,
+    marginTop: 20,
+    borderRadius: 5,
+    backgroundColor: '#708090'
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
-
+  loginButtonText: {
+    fontSize: 30,
+    color: 'white'
+  }
+})
 export default App;

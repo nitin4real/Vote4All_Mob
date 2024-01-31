@@ -4,4 +4,5 @@ export const themeColors = {
   primaryBorder: '#708090',
   white: 'white',
   primaryBtnBg: '#708090',
+  clickableText: '#007BFF',
 };

@@ -1,7 +1,7 @@
 import {StyleSheet} from 'react-native';
 import {dimens, themeColors} from '../../Constants';
 
-export const loginStyles = StyleSheet.create({
+export const authStyles = StyleSheet.create({
   inputWrapper: {
     flexDirection: 'row',
     marginHorizontal: dimens.size20,
@@ -26,11 +26,23 @@ export const loginStyles = StyleSheet.create({
     fontSize: dimens.size30,
     color: themeColors.white,
   },
-  headerContainer: {
+  loginHeaderContainer: {
     alignSelf: 'center',
     marginVertical: '30%',
   },
+  signupHeaderContainer: {
+    alignSelf: 'center',
+    marginVertical: '15%',
+  },
   headerText: {
     fontSize: dimens.size50,
+  },
+  toggleScreenContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginVertical: '5%',
+  },
+  toggleClickableText: {
+    fontWeight: '500',
   },
 });
